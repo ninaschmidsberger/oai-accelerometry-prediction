@@ -1,0 +1,29 @@
+# Participant data. Never commit anything under data/.
+data/
+
+# Environments
+.venv/
+venv/
+env/
+.conda/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Jupyter
+*.ipynb~
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Operating system
+.DS_Store
+Thumbs.db
+desktop.ini
