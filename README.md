@@ -172,9 +172,13 @@ Writes to `data/output/08_output`:
 
 Reads the derived summary metrics from both visits. Fits LASSO, ridge, elastic net,
 random forest and XGBoost across all outcomes, plus a class-balanced XGBoost classifier
-for Kellgren and Lawrence grade. Refits the winning model per outcome on the full Visit
-06 sample, applies it at Visit 08, and runs the confirmatory incremental R² permutation
-test comparing a covariate-only model against a model that adds the activity block.
+for Kellgren and Lawrence grade. Compares the model families, selects one model per
+outcome, and reports a sensitivity analysis over the selection rule together with
+bootstrap confidence intervals for the held-out test R². Refits the winning model per
+outcome on the full Visit 06 sample, applies it at Visit 08, and runs the confirmatory
+incremental R² permutation test comparing a covariate-only model against a model that
+adds the activity block. Finally it assembles the manuscript tables and the publication
+figures.
 
 Writes to `data/output/prediction_output`:
 
@@ -187,34 +191,39 @@ stage_4_random_forest_summary.csv
 stage_5_xgboost_summary.csv
 stage_6_kl_grade_classification.csv
 stage_7_model_comparison.csv
+stage_7_test_r2_bootstrap_ci.csv
 stage_8_longitudinal_validation.csv
 stage_8_longitudinal_combined_vs_activity_only.csv
 stage_8_kl_grade_longitudinal.csv
 stage_9_confirmatory_inference.csv
+supplement_selection_rule_comparison.csv
+table_3_model_selection_cv.csv
+table_4_selected_model_48_to_72_months.csv
+table_5_kl_grade_bootstrap_ci.csv
 predictions_all_outcomes.csv
-figures/                              # Vector and raster versions of Figures 1 to 3
+figures/                              # See below
 ```
+
+The `table_*` files are the manuscript tables as they appear in the article.
+`supplement_selection_rule_comparison.csv` is the sensitivity analysis over the model
+selection rule.
+
+Each publication figure is written to `figures/` three times, as PDF, as EPS and as PNG
+at 400 dpi. Four figure stems are produced: `figure_1_predictor_retention`,
+`figure_2_transportability_48_to_72_months`, `figure_3_covariates_versus_combined`, and
+`figure_2_and_3_combined`, the last being the merged two-panel version.
 
 ### Reproducibility
 
-`RANDOM_STATE = 42` and `CROSS_VALIDATION_FOLDS = 10` throughout notebook 03. Given the
+Notebook 03 uses `RANDOM_STATE = 42` and `CROSS_VALIDATION_FOLDS = 10` throughout. The
+resampling settings that determine the reported intervals and p-values are
+`BOOTSTRAP_REPLICATES = 2000`, `BOOTSTRAP_CONFIDENCE_LEVEL = 0.95` and
+`STAGE_9_PERMUTATION_COUNT = 1000`. Given the
 same input data and package versions, results are reproducible. Note that model families
 and hyperparameters for the longitudinal refit were selected with covariates present and
 are reused unchanged for the activity-only refit. This is documented in the methods.
 
 ---
-
-## CITATION
-
-If you use this code, please cite the accompanying article.
-
-> [Author list]. [Title]. [Journal]. [Year]. doi:[DOI]
-
-The analysis is also registered as an NDA Study with its own persistent identifier:
-doi:[NDA STUDY DOI].
-
----
-
 ## ACKNOWLEDGEMENT OF THE OAI
 
 Anyone publishing work based on OAI data is required to reproduce the following
@@ -245,5 +254,5 @@ by the NDA Data Use Agreement.
 
 ## CONTACT
 
-Nina Schmidsberger, FH Campus Wien, University of Applied Sciences, Favoritensraße 226, 1100 Vienna, Austria,
+Nina Schmidsberger, FH Campus Wien, University of Applied Sciences, Favoritenstraße 226, 1100 Vienna, Austria,
 nina.schmidsberger@fh-campuswien.ac.at
